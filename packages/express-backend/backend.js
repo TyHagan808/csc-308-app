@@ -37,7 +37,7 @@ const users = {
 
 app.use(express.json());
 app.use(cors());
-
+ 
 app.listen(port, () => {
   console.log(
     `Example app listening at http://localhost:${port}`
@@ -100,10 +100,18 @@ const addUser = (user) => {
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
-  addUser(userToAdd);
-  res.send();
+
+  // assign an id on the server
+  const id = generateId();
+  const newUser = { ...userToAdd, id };
+
+  users.users_list.push(newUser);
+
+  // return 201
+  res.status(201).send(newUser);
 });
 
+const generateId = () => Math.random().toString(36).slice(2, 9);
 
 // Delete Users:
 const deleteUserById = (id) => {
@@ -121,11 +129,12 @@ const deleteUserById = (id) => {
 
 app.delete("/users/:id", (req, res) => {
   const id = req.params.id;
-  const deleted = deleteUserById(id);
+  const index = users.users_list.findIndex((u) => u.id === id);
 
-  if (!deleted) {
-    res.status(404).send("Resource not found.");
-  } else {
-    res.send();
+  if (index === -1) {
+    return res.status(404).send("Resource not found.");
   }
+
+  users.users_list.splice(index, 1);
+  return res.status(204).send();
 });
