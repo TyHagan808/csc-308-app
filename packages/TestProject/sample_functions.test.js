@@ -9,11 +9,11 @@ describe("div(a, b)", () => {
     expect(myFunctions.div(-10, 2)).toBe(-5);
   });
 
-  test("division by zero returns Infinity (JS behavior)", () => {
+  test("division by zero returns Infinity", () => {
     expect(myFunctions.div(10, 0)).toBe(Infinity);
   });
 
-  test("0/0 returns NaN (JS behavior)", () => {
+  test("0/0 returns NaN", () => {
     expect(myFunctions.div(0, 0)).toBeNaN();
   });
 });
