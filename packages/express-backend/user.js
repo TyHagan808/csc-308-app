@@ -1,3 +1,5 @@
+console.log("\t - user.js loaded");
+
 import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema(

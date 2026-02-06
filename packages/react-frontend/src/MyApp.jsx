@@ -6,14 +6,6 @@ import Form from "./Form";
 function MyApp() {
     const [characters, setCharacters] = useState([]);
 
-    function removeOneCharacter(index) {
-        const updated = characters.filter((character, i) => {
-            return i !== index;
-        });
-
-        setCharacters(updated)
-    }
-
     function fetchUsers(name) {
         const url = name ? `http://localhost:8001/users?name=${encodeURIComponent(name)}` : "http://localhost:8001/users";
         return fetch(url);
@@ -50,18 +42,18 @@ function MyApp() {
         }
     }
 
-    async function deleteUser(id) {
+    async function deleteUser(_id) {
         try {
-            const res = await fetch(`http://localhost:8001/users/${encodeURIComponent(id)}`, {
+            const res = await fetch(`http://localhost:8001/users/${encodeURIComponent(_id)}`, {
             method: "DELETE",
             });
 
             if (res.status === 204 || res.status === 200) {
                 // success, update UI
-                setCharacters((prev) => prev.filter((u) => u.id !== id));
+                setCharacters((prev) => prev.filter((u) => u._id !== _id));
             } else if (res.status === 404) {
                 console.warn("User not found on server; removing locally.");
-                setCharacters((prev) => prev.filter((u) => u.id !== id));
+                setCharacters((prev) => prev.filter((u) => u._id !== _id));
             } else {
                 console.error("Failed to delete on server; status:", res.status);
             }
